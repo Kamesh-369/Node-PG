@@ -67,15 +67,7 @@ routes.post("/login",async (req,res)=>{
 })
 
 
-routes.get("/users", async (request, response) => {
-    const user = await User.find({});
-  
-    try {
-      response.send(user);
-    } catch (error) {
-      response.status(500).send(error);
-    }
-  });
+
 
 
 module.exports = routes;

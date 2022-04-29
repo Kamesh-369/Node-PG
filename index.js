@@ -11,9 +11,11 @@ mongoose.connect(process.env.DB_URL,()=>{console.log("DB Connected")})
 const app = exp()
 
 const authRoutes=require("./routes/authRoutes")
+const adminRoutes = require("./routes/adminRoutes")
 
 app.use(exp.json());
 app.use("/api/register",authRoutes);
+app.use("/admin",adminRoutes);
 
 
 
