@@ -11,9 +11,10 @@ routes.post("/register",async (req,res)=>{
   try {
 
     const hashPassword= await hashGenerate(req.body.password);
-    const userEmail = await req.body.email;
-    const dbEmail = await User.findOne({userEmail});
-    if(dbEmail)
+    // const userEmail = await req.body.email;
+    const existingUser = await User.findOne({email:req.body.email})
+    
+    if(existingUser)
     {
       return res.status(400).send("User Exist");
     }
