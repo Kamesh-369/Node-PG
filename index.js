@@ -5,6 +5,8 @@ const mongoose=require("mongoose")
 const dotenv = require("dotenv");
 dotenv.config();
 
+const cookieParser = require("cookie-parser");
+
 
 mongoose.connect(process.env.DB_URL,()=>{console.log("DB Connected")})
 
@@ -13,8 +15,9 @@ const app = exp()
 const authRoutes=require("./routes/authRoutes")
 const adminRoutes = require("./routes/adminRoutes")
 
+app.use(cookieParser());
 app.use(exp.json());
-app.use("/api/register",authRoutes);
+app.use("/api/user",authRoutes);
 app.use("/admin",adminRoutes);
 
 

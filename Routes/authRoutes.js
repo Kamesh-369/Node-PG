@@ -6,6 +6,8 @@ const User=require("../models/User");
 
 const {hashGenerate}=require("../helpers/hashing");
 const {hashValidator}=require("../helpers/hashing");
+const{tokenGenerator} = require("../Helpers/token");
+const authVerify = require("../Helpers/authVerify");
 
 routes.post("/register",async (req,res)=>{
   try {
@@ -53,7 +55,11 @@ routes.post("/login",async (req,res)=>{
         res.send("Password is Invalid");
         return;
       }
-      res.send("Login Successful.....");
+      else{
+        const token = await tokenGenerator(existingUser.email)
+        res.cookie("jwt",token);
+        res.send(token);
+    }
     }
 
 
@@ -65,6 +71,16 @@ routes.post("/login",async (req,res)=>{
 
     
 })
+
+routes.get("/view",authVerify ,async (request, response) => {
+  const user = await User.find({});
+
+  try {
+    response.send(user);
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
 
 
 
