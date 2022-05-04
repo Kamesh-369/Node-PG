@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const cookieParser = require("cookie-parser");
+const cors= require("cors");
 
 
 mongoose.connect(process.env.DB_URL,()=>{console.log("DB Connected")})
@@ -15,6 +16,7 @@ const app = exp()
 const authRoutes=require("./routes/authRoutes")
 const adminRoutes = require("./routes/adminRoutes")
 
+app.use(cors());
 app.use(cookieParser());
 app.use(exp.json());
 app.use("/api/user",authRoutes);

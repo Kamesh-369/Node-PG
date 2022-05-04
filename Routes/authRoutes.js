@@ -54,13 +54,13 @@ routes.post("/login",async (req,res)=>{
       const checkUser = await hashValidator(req.body.password,existingUser.password)
       if(!checkUser)
       {
-        res.send("Password is Invalid");
+        res.json({msg:"Password is Invalid"});
         return;
       }
       else{
         const token = await tokenGenerator(existingUser.email)
         res.cookie("jwt",token);
-        res.send(token);
+        res.json({token:token,msg:"Login Success"});
     }
     }
 
@@ -125,6 +125,13 @@ routes.get("/view/:category/:course/:course",authVerify ,async (request, respons
   } catch (error) {
     response.status(500).send(error);
   }
+});
+
+
+//Logout Functionality  
+routes.get("/logout",(req,res)=>{
+  res.clearCookie("jwt");
+  res.send("completed successfully");
 });
 
 
