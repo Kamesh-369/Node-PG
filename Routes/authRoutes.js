@@ -10,6 +10,8 @@ const {hashValidator}=require("../helpers/hashing");
 const{tokenGenerator} = require("../Helpers/token");
 const authVerify = require("../Helpers/authVerify");
 const req = require('express/lib/request');
+var nodemailer = require('nodemailer');
+const res = require('express/lib/response');
 
 routes.post("/register",async (req,res)=>{
   try {
@@ -136,5 +138,37 @@ routes.get("/logout",(req,res)=>{
 
 
 
+//Use Case 5: Confirm Enrollment
+routes.post("/view/:category/:course/:course/enroll",authVerify ,async (request, response) => {
+  const catego = request.params.category;
+  const cour=request.params.course;
+  const userName = request.body.email;
+  //const cat = await Category.find({category:catego,courseName:cour}).select({ "courseName":1,"instructorDetails": 1, "_id": 0,"overview":1});;
+  var sender = nodemailer.createTransport({
+    service : 'gmail',
+    auth : {
+        user : 'testmail.course@gmail.com',
+        pass : 'kamesh@123'
+    }
+});
+
+var composeEmail = {
+    from: 'testmail.course@gmail.com',
+    to: userName,
+    subject: 'Testing Email',
+    html:'<h1>Testing Email ---- Course Registerd Successfuly<br>'+cour+' : Course Registerd</h1>',
+};
+
+sender.sendMail(composeEmail, function(error,info){
+  if(error){
+      console.log(error);
+      response.send(error);
+  }
+  else{
+      response.send("Mail sent successfully" + info.response);
+  }
+})
+
+});
 
 module.exports = routes;
