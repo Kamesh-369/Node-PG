@@ -14,6 +14,7 @@ var nodemailer = require('nodemailer');
 const res = require('express/lib/response');
 
 routes.post("/register",async (req,res)=>{
+  console.log(req.body);
   try {
 
     const hashPassword= await hashGenerate(req.body.password);
@@ -28,13 +29,13 @@ routes.post("/register",async (req,res)=>{
       
         username:req.body.username,
         email:req.body.email,
-        phoneno:req.body.phoneno,
+        phoneno:req.body.phonenumber,
         password:hashPassword
         
     });
 
     const savedUser = await user.save()
-    res.send(savedUser);
+    res.json(savedUser);
     
   } catch (error) {
     res.send(error);
@@ -91,10 +92,11 @@ routes.get("/view",authVerify ,async (request, response) => {
 //Use Case:2 To view based on specific Categories -- Done
 routes.get("/view/:category",authVerify ,async (request, response) => {
   const catego = request.params.category;
+  console.log(catego);
   const cat = await Category.find({category:catego })
 
   try {
-    response.send(cat);
+    response.json(cat);
   } catch (error) {
     response.status(500).send(error);
   }
