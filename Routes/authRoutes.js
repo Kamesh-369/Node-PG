@@ -30,7 +30,8 @@ routes.post("/register",async (req,res)=>{
         username:req.body.username,
         email:req.body.email,
         phoneno:req.body.phonenumber,
-        password:hashPassword
+        password:hashPassword,
+        userType:req.body.userType
         
     });
 
@@ -61,9 +62,11 @@ routes.post("/login",async (req,res)=>{
         return;
       }
       else{
-        const token = await tokenGenerator(existingUser.email)
+        const token = await tokenGenerator(existingUser.email, existingUser.userType)
+        const check = await (existingUser.userType)
         res.cookie("jwt",token);
-        res.json({token:token,msg:"Login Success"});
+        res.send({token:token,msg:"Login Success"});
+        console.log(check);
     }
     }
 
@@ -105,13 +108,16 @@ routes.get("/view/:category",authVerify ,async (request, response) => {
 
 
 //Use Case 3: To Show Relavant Courses -- Done
-routes.get("/view/:category/:course",authVerify ,async (request, response) => {
+routes.get("/view/:category/:course" ,authVerify,async (request, response) => {
+  
   const catego = request.params.category;
   const cour=request.params.course;
-  const cat = await Category.find({category:catego,courseName:cour}).select({ "duration": 1, "_id": 0,"courseName":1});;
+  console.log(catego);
+  console.log(cour);
+  const cat = await Category.find({category:catego,courseName:cour}).select({ "duration": 1, "_id": 0,"courseName":1,"instructorDetails": 1,"overview":1,"instructor":1});;
 
   try {
-    response.send(cat);
+    response.json(cat);
   } catch (error) {
     response.status(500).send(error);
   }
@@ -122,7 +128,7 @@ routes.get("/view/:category/:course",authVerify ,async (request, response) => {
 routes.get("/view/:category/:course/:course",authVerify ,async (request, response) => {
   const catego = request.params.category;
   const cour=request.params.course;
-  const cat = await Category.find({category:catego,courseName:cour}).select({ "courseName":1,"instructorDetails": 1, "_id": 0,"overview":1});;
+  const cat = await Category.find({category:catego,courseName:cour}).select({ "courseName":1,"instructorDetails": 1, "_id": 0,"overview":1,"instructor":1});;
 
   try {
     response.send(cat);
