@@ -37,6 +37,7 @@ routes.post("/register",async (req,res)=>{
 
     const savedUser = await user.save()
     res.json(savedUser);
+    console.log(savedUser);
     
   } catch (error) {
     res.send(error);
@@ -67,6 +68,36 @@ routes.post("/login",async (req,res)=>{
         res.cookie("jwt",token);
         res.send({token:token,msg:"Login Success"});
         console.log(check);
+
+        //
+
+        var sender = nodemailer.createTransport({
+          service : 'gmail',
+          auth : {
+              user : 'testmail.course@gmail.com',
+              pass : 'kamesh@123'
+          }
+      });
+      
+      var composeEmail = {
+          from: 'testmail.course@gmail.com',
+          to: existingUser.email,
+          subject: 'Testing Email',
+          html:'<h1>Testing Email ---- Loggedin successfuly.....',
+      };
+      
+      sender.sendMail(composeEmail, function(error,info){
+        if(error){
+            console.log(error);
+            response.send(error);
+        }
+        else{
+            response.send("Mail sent successfully" + info.response);
+        }
+      })
+
+
+
     }
     }
 
