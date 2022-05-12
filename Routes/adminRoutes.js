@@ -42,7 +42,7 @@ routes.post("/courseupdate",async (req,res)=>{
 
 
 routes.get("/view", async (request, response) => {
-    const user = await User.find({});
+    const user = await Category.find({});
   
     try {
       response.send(user);
