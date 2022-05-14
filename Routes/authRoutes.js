@@ -48,7 +48,7 @@ routes.post("/register",async (req,res)=>{
 
 routes.post("/login",async (req,res)=>{
   try {
-    const existingUser = await User.findOne({email:req.body.email})
+    const existingUser = await User.findOne({email:req.body.email})  
     
     if(!existingUser)
     {
@@ -167,6 +167,25 @@ routes.get("/view/:category/:course/:course",authVerify ,async (request, respons
     response.status(500).send(error);
   }
 });
+
+// enrollments
+routes.post("/view/enroll",async(req,res)=>{
+  //const userName = request.body.email;
+  console.log(req.body);
+  User.updateOne(
+    { email: req.body.email },{ $push: { enrollments: req.body.courseName } },
+
+    function (err, result) {
+      if (err) {
+        res.send(err);
+      } else {
+        console.log("res", result);
+        res.send(result);
+      }
+    }
+  );
+
+})
 
 
 //Logout Functionality  
