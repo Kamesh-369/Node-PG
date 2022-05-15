@@ -145,7 +145,7 @@ routes.get("/view/:category/:course" ,authVerify,async (request, response) => {
   const cour=request.params.course;
   console.log(catego);
   console.log(cour);
-  const cat = await Category.find({category:catego,courseName:cour}).select({ "duration": 1, "_id": 0,"courseName":1,"instructorDetails": 1,"overview":1,"instructor":1});;
+  const cat = await Category.find({category:catego,courseName:cour}).select({ "duration": 1, "_id": 0,"courseName":1,"instructorDetails": 1,"overview":1,"instructor":1,"category":1});;
 
   try {
     response.json(cat);
@@ -169,7 +169,7 @@ routes.get("/view/:category/:course/:course",authVerify ,async (request, respons
 });
 
 // enrollments
-routes.post("/view/enroll",async(req,res)=>{
+routes.post("/view/enroll",authVerify,async(req,res)=>{
   //const userName = request.body.email;
   console.log(req.body);
   User.updateOne(
@@ -184,6 +184,32 @@ routes.post("/view/enroll",async(req,res)=>{
       }
     }
   );
+
+})
+
+//Profile Component
+
+routes.get("/profile",authVerify,async(req,res)=>{
+  //const userName = request.body.email;
+  console.log(req.body);
+  const cat = await User.find({email:req.body.email})
+  try {
+    res.json(cat);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+  // User.updateOne(
+  //   { email: req.body.email },{ $push: { enrollments: req.body.courseName } },
+
+  //   function (err, result) {
+  //     if (err) {
+  //       res.send(err);
+  //     } else {
+  //       console.log("res", result);
+  //       res.send(result);
+  //     }
+  //   }
+  // );
 
 })
 
