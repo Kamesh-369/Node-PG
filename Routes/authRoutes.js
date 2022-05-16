@@ -189,10 +189,11 @@ routes.post("/view/enroll",authVerify,async(req,res)=>{
 
 //Profile Component
 
-routes.get("/profile",authVerify,async(req,res)=>{
+routes.get("/profile/:email",authVerify,async(req,res)=>{
   //const userName = request.body.email;
-  console.log(req.body);
-  const cat = await User.find({email:req.body.email})
+  const mail = req.params.email;
+  console.log(mail);
+  const cat = await User.find({email:mail})
   try {
     res.json(cat);
   } catch (error) {
