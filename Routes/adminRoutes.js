@@ -42,13 +42,34 @@ routes.post("/courseupdate",async (req,res)=>{
 
 
 routes.get("/view", async (request, response) => {
-    const user = await Category.find({});
+  //console.log(request);
+  const user = await Category.find({});
+  console.log(user);
   
     try {
-      response.send(user);
+      response.json(user);
     } catch (error) {
       response.status(500).send(error);
     }
+  });
+
+
+  routes.delete("/view/:courseName", async (request, response) => {
+    //console.log(request);
+    
+    const cour= await request.params.courseName;
+    Category.findByIdAndDelete({_id:cour}, 
+      function(err, data) {
+          if(err){
+              console.log(err);
+          }
+          else{
+              response.json(data);
+
+          }
+      });
+
+
   });
 
 
