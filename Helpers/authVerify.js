@@ -11,12 +11,19 @@ module.exports = async function(req,res,next){
     if(token === 'null'){
         return res.status(401).send('Unauthorized request')
     }
-    let payload = jwt.verify(token, 'courseRegistration')
-    if(!payload){
-        return res.status(401).send('Unauthorized request')
+    try {
+        let payload = jwt.verify(token, 'courseRegistration')
+        if(!payload){
+            return res.status(401).send('Unauthorized request')
+        }
+        req.userId = payload.subject
+        next()
+    } catch (error) {
+        console.log(error+"error");
+        res.status(401).send('Unauthorized request')
     }
-    req.userId = payload.subject
-    next()
+    
+    
 
 
 

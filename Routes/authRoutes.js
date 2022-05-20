@@ -7,12 +7,12 @@ const Category=require("../models/Category");
 
 const {hashGenerate}=require("../helpers/hashing");
 const {hashValidator}=require("../helpers/hashing");
-const{tokenGenerator} = require("../Helpers/token");
+const{tokenGenerator,refreshtokenGenerator,ReftokenValidator} = require("../Helpers/token");
 const authVerify = require("../Helpers/authVerify");
 const req = require('express/lib/request');
 var nodemailer = require('nodemailer');
 const res = require('express/lib/response');
-
+const jwt = require("jsonwebtoken");
 routes.post("/register",async (req,res)=>{
   console.log(req.body);
   try {
@@ -64,9 +64,12 @@ routes.post("/login",async (req,res)=>{
       }
       else{
         const token = await tokenGenerator(existingUser.email, existingUser.userType)
+        const ref_token = await refreshtokenGenerator(existingUser.email, existingUser.userType)
         const check = await (existingUser.userType)
         res.cookie("jwt",token);
-        res.send({token:token,msg:"Login Success"});
+        res.cookie("ref_jwt",ref_token);
+        res.send({token:token,ref_token:ref_token,msg:"Login Success"});
+       // res.send({token:ref_token,msg:"Login Success with Refresh Token"});
         console.log(check);
 
         //
@@ -105,11 +108,13 @@ routes.post("/login",async (req,res)=>{
   } catch (error) {
     res.send(error);
     
-  }
-    
+  }  
 
     
 })
+
+
+
 
 routes.get("/view",authVerify ,async (request, response) => {
   const user = await User.find({});
@@ -255,5 +260,47 @@ sender.sendMail(composeEmail, function(error,info){
 })
 
 });
+
+
+routes.post("/token",async (req,res) => {
+  // // refresh the damn token
+  // const postData = await req.body
+  // console.log(req.body);
+  // // if refresh token exists
+  // if(postData.ref_token ) {
+  //     const user = await {
+  //         "email": postData.email,
+  //         "userType": postData.userType
+  //     }
+  //     const token = await jwt.sign(user, "Registration", { expiresIn: "10m"})
+  //     const response = await {
+  //         "token": token,
+  //     }
+  //     // update the token in the list
+  //     //tokenList[postData.refreshToken].token = token
+  //     res.status(200).json(response);        
+  // } else {
+  //     res.status(404).send('Invalid request')
+  // }
+  console.log("Inside the node");
+  const refreshToken = req.body.refreshToken;
+  const mail=req.body.mail;
+  const role=req.body.role;
+  if (!refreshToken) {
+    return res.json("User not found");
+  }
+  const token = await jwt.sign(refreshToken, "Registration");
+  console.log("token", token);
+  console.log("InsideRefreshPart");
+  if (token) {
+    const accessToken = tokenGenerator(mail,role);
+    return res.json({ accessToken });
+  }
+},
+
+
+
+
+)
 
 module.exports = routes;
