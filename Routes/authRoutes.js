@@ -7,11 +7,11 @@ const Category=require("../models/Category");
 
 const {hashGenerate}=require("../helpers/hashing");
 const {hashValidator}=require("../helpers/hashing");
-const{tokenGenerator,refreshtokenGenerator,ReftokenValidator} = require("../Helpers/token");
+const{tokenGenerator,refreshtokenGenerator} = require("../Helpers/token");
 const authVerify = require("../Helpers/authVerify");
-const req = require('express/lib/request');
+
 var nodemailer = require('nodemailer');
-const res = require('express/lib/response');
+
 const jwt = require("jsonwebtoken");
 routes.post("/register",async (req,res)=>{
   console.log(req.body);

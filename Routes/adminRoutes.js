@@ -2,7 +2,7 @@ const exp = require('express')
 
 const routes = exp.Router();
 
-const User=require("../models/User");
+//const User=require("../models/User");
 const Category=require("../models/Category");
 
 
