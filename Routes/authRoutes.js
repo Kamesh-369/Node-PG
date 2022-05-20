@@ -5,8 +5,7 @@ const routes = exp.Router();
 const User=require("../models/User");
 const Category=require("../models/Category");
 
-const {hashGenerate}=require("../helpers/hashing");
-const {hashValidator}=require("../helpers/hashing");
+const {hashGenerate,hashValidator}=require("../Helpers/hashing");
 const{tokenGenerator,refreshtokenGenerator} = require("../Helpers/token");
 const authVerify = require("../Helpers/authVerify");
 
