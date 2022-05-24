@@ -76,15 +76,15 @@ routes.get("/view", async (request, response) => {
   routes.put("/view/:id",async(req,res)=>{
     const id= await req.params.id;
     console.log("Change request",req.body);
-    Category.findOneAndUpdate({id},{
-      $set:{
+    Category.updateOne({_id:id},{
+     // $set:{
         category:req.body.category,
         courseName:req.body.courseName,
         duration:req.body.duration,
         instructor:req.body.instructor,
         instructorDetails:req.body.instructorDetails,
         overview:req.body.overview
-      }
+      //}
     })
     .then(result=>{
       res.json({
