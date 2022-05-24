@@ -22,7 +22,7 @@ routes.post("/register",async (req,res)=>{
     
     if(existingUser)
     {
-      return res.status(400).send("User Exist");
+      return res.status(400).send(error);
     }
     const user = new User({
       
@@ -51,15 +51,15 @@ routes.post("/login",async (req,res)=>{
     
     if(!existingUser)
     {
-      res.send("Email Id Mismatch");
+      return res.status(400).send(error);
     }
     else
     {
       const checkUser = await hashValidator(req.body.password,existingUser.password)
       if(!checkUser)
       {
-        res.json({msg:"Password is Invalid"});
-        return;
+        return res.status(400).send(error);
+        
       }
       else{
         const token = await tokenGenerator(existingUser.email, existingUser.userType)
