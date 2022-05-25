@@ -22,7 +22,7 @@ routes.post("/register",async (req,res)=>{
     
     if(existingUser)
     {
-      return res.status(400).send(error);
+      return res.status(409).send(error);
     }
     const user = new User({
       
@@ -30,7 +30,6 @@ routes.post("/register",async (req,res)=>{
         email:req.body.email,
         phoneno:req.body.phonenumber,
         password:hashPassword,
-        userType:req.body.userType
         
     });
 
