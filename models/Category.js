@@ -7,7 +7,8 @@ const categorySchema =new mongoose.Schema({
     duration:{type:String,required:true},
     instructor:{type:String,required:true},
     instructorDetails:{type:String,required:true},
-    overview:{type:String,required:true}
+    overview:{type:String,required:true},
+    price:{type:String,required:true}
 
 })
 

@@ -21,7 +21,8 @@ routes.post("/courseupdate",async (req,res)=>{
         duration:req.body.duration,
         instructor:req.body.instructor,
         instructorDetails:req.body.instructorDetails,
-        overview:req.body.overview
+        overview:req.body.overview,
+        price:req.body.price
 
         
     });
@@ -83,7 +84,8 @@ routes.get("/view", async (request, response) => {
         duration:req.body.duration,
         instructor:req.body.instructor,
         instructorDetails:req.body.instructorDetails,
-        overview:req.body.overview
+        overview:req.body.overview,
+        price:req.body.price
       //}
     })
     .then(result=>{

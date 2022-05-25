@@ -84,8 +84,8 @@ routes.post("/login",async (req,res)=>{
       var composeEmail = {
           from: 'testmail.course@gmail.com',
           to: existingUser.email,
-          subject: 'Testing Email',
-          html:'<h1>Testing Email ---- Loggedin successfuly.....',
+          subject: 'Skillup',
+          html:'<h1>Welcome To Skillup ---- You have been Loggedin successfuly.....',
       };
       
       sender.sendMail(composeEmail, function(error,info){
@@ -149,7 +149,7 @@ routes.get("/view/:category/:course" ,authVerify,async (request, response) => {
   const cour=request.params.course;
   console.log(catego);
   console.log(cour);
-  const cat = await Category.find({category:catego,courseName:cour}).select({ "duration": 1, "_id": 0,"courseName":1,"instructorDetails": 1,"overview":1,"instructor":1,"category":1});;
+  const cat = await Category.find({category:catego,courseName:cour}).select({ "duration": 1, "_id": 0,"courseName":1,"instructorDetails": 1,"overview":1,"instructor":1,"category":1,"price":1});;
 
   try {
     response.json(cat);
